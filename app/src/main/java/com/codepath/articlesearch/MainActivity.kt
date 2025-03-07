@@ -20,8 +20,8 @@ fun createJson() = Json {
 }
 
 private const val TAG = "MainActivity/"
-private const val SEARCH_API_KEY = BuildConfig.API_KEY
-private const val ARTICLE_SEARCH_URL =
+private val SEARCH_API_KEY = BuildConfig.API_KEY
+private val ARTICLE_SEARCH_URL =
     "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${SEARCH_API_KEY}"
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         val client = AsyncHttpClient()
+
+        Log.d(TAG, "API Key: $SEARCH_API_KEY")
+        Log.d(TAG, "Requesting URL: $ARTICLE_SEARCH_URL")
+
         client.get(ARTICLE_SEARCH_URL, object : JsonHttpResponseHandler() {
             override fun onFailure(
                 statusCode: Int,
@@ -52,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                 response: String?,
                 throwable: Throwable?
             ) {
-                Log.e(TAG, "Failed to fetch articles: $statusCode")
+                Log.e(TAG, "Failed to fetch articles: $statusCode, Response: $response", throwable)
             }
 
             override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
